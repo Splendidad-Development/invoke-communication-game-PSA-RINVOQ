@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import GameModal from '@/components/game/GameModal.vue';
 import type { GameImage } from '@/types';
 
@@ -19,6 +19,15 @@ const emit = defineEmits<{
     place: [imageId: number, slotId: string];
     clear: [slotId: string];
 }>();
+
+/** Images still free to place: those in the tray plus the one already in this box. Images in other boxes are left out. */
+const available = computed(() =>
+    props.order.filter((imageId) => {
+        const placement = props.placedIn(imageId);
+
+        return !placement || placement.slotId === props.slotId;
+    }),
+);
 
 const selected = ref<number | null>(null);
 const track = ref<HTMLElement | null>(null);
@@ -82,7 +91,7 @@ function onKeydown(event: KeyboardEvent): void {
                 </h2>
                 <p class="m-0 text-[15px] font-medium text-muted">
                     Scroll left or right, pick the image that fits this box,
-                    then place it.
+                    then place it. Images already on the board are not shown.
                 </p>
             </div>
 
@@ -100,7 +109,7 @@ function onKeydown(event: KeyboardEvent): void {
                     class="flex snap-x snap-mandatory gap-6 overflow-x-auto pt-1.5 pb-4"
                 >
                     <button
-                        v-for="(imageId, index) in order"
+                        v-for="(imageId, index) in available"
                         :key="imageId"
                         type="button"
                         class="flex w-[min(440px,78vw)] shrink-0 cursor-pointer snap-center flex-col gap-2 text-left text-cream"
@@ -132,16 +141,10 @@ function onKeydown(event: KeyboardEvent): void {
                         >
                             <span class="whitespace-nowrap"
                                 >Image {{ index + 1 }} of
-                                {{ order.length }}</span
+                                {{ available.length }}</span
                             >
                             <span class="truncate">
-                                {{
-                                    !placedIn(imageId)
-                                        ? 'Not placed yet'
-                                        : placedIn(imageId)?.slotId === slotId
-                                          ? 'In this box'
-                                          : `Placed in: ${placedIn(imageId)?.title}`
-                                }}
+                                {{ placedIn(imageId) ? 'In this box' : '' }}
                             </span>
                         </div>
                     </button>

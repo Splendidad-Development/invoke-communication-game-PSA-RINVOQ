@@ -18,7 +18,7 @@ const props = defineProps<{
     playerName: string;
 }>();
 
-const emit = defineEmits<{ close: [] }>();
+const emit = defineEmits<{ close: []; showCorrect: [] }>();
 
 const player = useSymphonyPlayer();
 const leaderboard = useLeaderboard();
@@ -32,6 +32,11 @@ const hasPlayed = computed(
 function close(): void {
     player.stop();
     emit('close');
+}
+
+function showCorrect(): void {
+    player.stop();
+    emit('showCorrect');
 }
 
 function openLeaderboard(): void {
@@ -88,7 +93,10 @@ function openLeaderboard(): void {
 
         <div class="flex flex-wrap justify-center gap-3">
             <button type="button" class="btn-ghost" @click="close">
-                Review board
+                Review your board
+            </button>
+            <button type="button" class="btn-ghost" @click="showCorrect">
+                Correct answer
             </button>
             <Link :href="welcome()" class="btn-ghost" @click="player.stop()">
                 Restart

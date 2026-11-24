@@ -23,7 +23,7 @@ export const dragOptions = {
     group: 'symphony',
     animation: 150,
     draggable: '.tile',
-    filter: '.zoom-button',
+    filter: '.zoom-button, .remove-button',
     preventOnFilter: false,
     forceFallback: true,
     fallbackOnBody: true,

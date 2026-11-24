@@ -11,6 +11,7 @@ const emit = defineEmits<{ close: [] }>();
     <GameModal
         :open="image !== null"
         label="Image preview"
+        close-variant="prominent"
         panel-class="max-w-[1300px] bg-white p-4"
         @close="emit('close')"
     >
@@ -18,7 +19,7 @@ const emit = defineEmits<{ close: [] }>();
             v-if="image"
             :src="image.url"
             :alt="`Image ${image.id}`"
-            class="block h-auto w-full rounded-lg"
+            class="mx-auto block h-auto max-h-[calc(94vh-2rem)] w-auto max-w-full rounded-lg object-contain"
         />
     </GameModal>
 </template>

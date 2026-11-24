@@ -25,6 +25,7 @@ const emit = defineEmits<{
     dragEnd: [];
     open: [slotId: string];
     zoom: [image: GameImage];
+    remove: [slotId: string];
 }>();
 
 function onAdd(event: DraggableEvent): void {
@@ -85,7 +86,9 @@ function ariaLabel(): string {
             :key="imageId"
             :image="images.get(imageId)!"
             fill
+            :removable="!locked"
             @zoom="emit('zoom', $event)"
+            @remove="emit('remove', slotId)"
         />
         <span
             v-if="isCorrect !== null && list.length"

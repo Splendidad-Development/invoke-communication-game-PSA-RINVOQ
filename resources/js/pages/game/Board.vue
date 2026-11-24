@@ -43,9 +43,9 @@ const board = useBoardArrangement(
     props.images.map((image) => image.id),
 );
 
-/** After submitting, the board shows the correct arrangement; players can switch back to their own answers. */
+/** After submitting, the board shows the player's own arrangement with wrong boxes marked; they can switch to the correct one. */
 type BoardView = 'correct' | 'mine';
-const view = ref<BoardView>('correct');
+const view = ref<BoardView>('mine');
 
 function viewPlacements(): Record<string, number> | null {
     if (!props.result) {
@@ -80,7 +80,7 @@ watch(
     () => props.result?.id ?? null,
     () => {
         symphony.stop();
-        view.value = 'correct';
+        view.value = 'mine';
         board.reset(viewPlacements());
         isResultOpen.value = props.result !== null;
         pickerSlotId.value = null;
@@ -211,6 +211,11 @@ const submitLabel = computed(() => {
         : 'Submit arrangement';
 });
 
+function showCorrectArrangement(): void {
+    isResultOpen.value = false;
+    showView('correct');
+}
+
 onBeforeUnmount(() => symphony.stop());
 </script>
 
@@ -327,11 +332,11 @@ onBeforeUnmount(() => symphony.stop());
                     >
                         <button
                             v-for="option in [
+                                { value: 'mine', label: 'Your answers' },
                                 {
                                     value: 'correct',
                                     label: 'Correct arrangement',
                                 },
-                                { value: 'mine', label: 'Your answers' },
                             ] as const"
                             :key="option.value"
                             type="button"
@@ -359,24 +364,28 @@ onBeforeUnmount(() => symphony.stop());
 
             <!-- Board -->
             <div
-                class="mx-auto grid w-full max-w-[1680px] grid-cols-1 items-start gap-3.5 px-[clamp(.8rem,2vw,24px)] pt-[18px] pb-2.5 sm:grid-cols-2 board:grid-cols-[190fr_150fr_400fr_400fr_190fr]"
+                class="mx-auto grid w-full max-w-[1680px] grid-cols-1 items-start px-[clamp(.8rem,2vw,24px)] pt-[18px] pb-2.5 sm:grid-cols-2 board:grid-cols-[190fr_150fr_400fr_400fr_190fr]"
+                :class="isLocked ? 'gap-3.5' : 'gap-6'"
             >
                 <div
                     v-for="column in layout"
                     :key="column.key"
                     class="flex min-w-0 flex-col items-center gap-3.5"
-                    :class="
+                    :class="[
                         column.rows.some((row) => row.length > 1) &&
-                        'sm:col-span-2 board:col-span-1'
-                    "
+                            'sm:col-span-2 board:col-span-1',
+                        !isLocked &&
+                            'rounded-2xl p-2 ring-1 ring-white/8 ring-inset',
+                    ]"
                 >
                     <BoardColumnHeading v-if="isLocked" :column="column" />
                     <div
-                        :class="
+                        :class="[
                             column.rows.some((row) => row.length > 1)
-                                ? 'grid w-full grid-cols-2 items-start gap-3.5'
-                                : 'flex w-full flex-col gap-3.5'
-                        "
+                                ? 'grid w-full grid-cols-2 items-start'
+                                : 'flex w-full flex-col',
+                            isLocked ? 'gap-3.5' : 'gap-x-3 gap-y-5',
+                        ]"
                     >
                         <template
                             v-for="(row, rowIndex) in column.rows"
@@ -403,6 +412,7 @@ onBeforeUnmount(() => symphony.stop());
                                 @drag-end="onDragEnd"
                                 @open="openSlot"
                                 @zoom="lightboxImage = $event"
+                                @remove="board.clearSlot"
                             />
                         </template>
                     </div>
@@ -483,6 +493,7 @@ onBeforeUnmount(() => symphony.stop());
             :result="result"
             :player-name="player.name"
             @close="isResultOpen = false"
+            @show-correct="showCorrectArrangement"
         />
     </GameLayout>
 </template>
