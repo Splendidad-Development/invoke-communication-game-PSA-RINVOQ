@@ -43,7 +43,7 @@ it('shows the group picker and the group question', function () {
             ->where('player.name', $player->name)
             ->has('groups', 3)
             ->where('groups.1.number', 2)
-            ->where('groups.1.caption.1', ['text' => 'Switch from 1L TNFis to IL-17is in 2L', 'bold' => true]));
+            ->where('groups.1.caption.1', ['text' => 'Bimzelx driven by strong perception of IL-17is', 'bold' => true]));
 
     $this->get(route('answers.create', 2))
         ->assertInertia(fn (Assert $page) => $page->component('game/Question')
@@ -97,7 +97,7 @@ it('saves the arrangement with the order of images and the server-side score', f
     $response->assertRedirect(route('arrangements.show', $arrangement));
     expect($arrangement->placements)->toBe($placements)
         ->and($arrangement->score)->toBe(14)
-        ->and($arrangement->pattern)->toBe('0'.str_repeat('1', 14).'0')
+        ->and($arrangement->pattern)->toBe('0'.str_repeat('1', 13).'01')
         ->and($arrangement->group)->toBe(3)
         ->and($arrangement->player_id)->toBe($answer->player_id);
 

@@ -8,7 +8,7 @@ it('has 16 slots in board order', function () {
 
     expect($slotIds)->toHaveCount(16)
         ->and($slotIds[0])->toBe('unmet-0')
-        ->and(end($slotIds))->toBe('safety-0');
+        ->and(end($slotIds))->toBe('multi-0');
 });
 
 it('scores a perfect board as 16 with an all-correct pattern', function () {
@@ -21,11 +21,11 @@ it('uses the PsA deck answers for each box', function () {
     expect(ArrangementFactory::perfectPlacements())->toBe([
         'unmet-0' => 1,
         'rtb-0' => 3,
-        'rtb_rapid-0' => 4,
         'ctrl-0' => 2,
         'ctrl-1' => 5,
-        'ctrl-2' => 7,
         'joint-0' => 6,
+        'joint-1' => 7,
+        'rtb_rapid-0' => 4,
         'mda-0' => 8,
         'mda-1' => 9,
         'joint_rct-0' => 10,
@@ -33,8 +33,8 @@ it('uses the PsA deck answers for each box', function () {
         'skin-0' => 12,
         'skin-1' => 13,
         'mda_rwe-0' => 14,
-        'multi-0' => 15,
         'safety-0' => 16,
+        'multi-0' => 15,
     ]);
 });
 
@@ -51,7 +51,7 @@ it('marks the slots holding wrong images in the pattern', function () {
 
 it('accepts the control images in any order within their box group', function () {
     $placements = ArrangementFactory::perfectPlacements();
-    [$placements['ctrl-0'], $placements['ctrl-2']] = [$placements['ctrl-2'], $placements['ctrl-0']];
+    [$placements['ctrl-0'], $placements['ctrl-1']] = [$placements['ctrl-1'], $placements['ctrl-0']];
 
     expect(app(SymphonyBoard::class)->score($placements)['score'])->toBe(16);
 });

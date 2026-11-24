@@ -62,11 +62,11 @@ export function verdictFor(score: number, total: number, name: string): string {
         return `Perfect harmony, ${name}. Every image is in its place.`;
     }
 
-    if (score >= 18) {
+    if (score >= total * 0.72) {
         return `Nearly there, ${name}. A few notes are out of tune.`;
     }
 
-    if (score >= 10) {
+    if (score >= total * 0.4) {
         return `Good start, ${name}. Listen for the sour notes, then try again.`;
     }
 
