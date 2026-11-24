@@ -43,9 +43,28 @@ const board = useBoardArrangement(
     props.images.map((image) => image.id),
 );
 
+/** After submitting, the board shows the correct arrangement; players can switch back to their own answers. */
+type BoardView = 'correct' | 'mine';
+const view = ref<BoardView>('correct');
+
+function viewPlacements(): Record<string, number> | null {
+    if (!props.result) {
+        return null;
+    }
+
+    return view.value === 'correct'
+        ? props.result.solution
+        : props.result.placements;
+}
+
 // Deterministic on the server and during hydration; shuffled once mounted in the browser.
-board.reset(props.result?.placements ?? null, { shuffled: false });
-onMounted(() => board.reset(props.result?.placements ?? null));
+board.reset(viewPlacements(), { shuffled: false });
+onMounted(() => board.reset(viewPlacements()));
+
+function showView(next: BoardView): void {
+    view.value = next;
+    board.reset(viewPlacements());
+}
 
 const isLocked = computed(() => props.result !== null);
 const isResultOpen = ref(props.result !== null);
@@ -61,7 +80,8 @@ watch(
     () => props.result?.id ?? null,
     () => {
         symphony.stop();
-        board.reset(props.result?.placements ?? null);
+        view.value = 'correct';
+        board.reset(viewPlacements());
         isResultOpen.value = props.result !== null;
         pickerSlotId.value = null;
         lightboxImage.value = null;
@@ -100,6 +120,10 @@ function onDragEnd(): void {
 function correctness(slotId: string): boolean | null {
     if (!props.result) {
         return null;
+    }
+
+    if (view.value === 'correct') {
+        return true;
     }
 
     return props.result.pattern[props.slotIds.indexOf(slotId)] === '1';
@@ -295,6 +319,42 @@ onBeforeUnmount(() => symphony.stop());
                     CLM tiles to address the assigned challenge.
                 </p>
                 <ColourKey v-if="isLocked" />
+                <div v-if="isLocked" class="flex flex-wrap items-center gap-3">
+                    <div
+                        class="inline-flex w-fit gap-1 rounded-full bg-white/7 p-1"
+                        role="group"
+                        aria-label="Board view"
+                    >
+                        <button
+                            v-for="option in [
+                                {
+                                    value: 'correct',
+                                    label: 'Correct arrangement',
+                                },
+                                { value: 'mine', label: 'Your answers' },
+                            ] as const"
+                            :key="option.value"
+                            type="button"
+                            class="cursor-pointer rounded-full px-3.5 py-[7px] text-[13px] font-bold"
+                            :class="
+                                view === option.value
+                                    ? 'bg-gold text-ink'
+                                    : 'text-cream'
+                            "
+                            :aria-pressed="view === option.value"
+                            @click="showView(option.value)"
+                        >
+                            {{ option.label }}
+                        </button>
+                    </div>
+                    <p class="m-0 text-[13px] font-medium text-muted">
+                        {{
+                            view === 'correct'
+                                ? 'Every image in the box where it belongs.'
+                                : 'Your board: green boxes are right, pink boxes are wrong.'
+                        }}
+                    </p>
+                </div>
             </div>
 
             <!-- Board -->

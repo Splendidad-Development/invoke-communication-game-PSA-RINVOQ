@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('answer_id')->constrained()->cascadeOnDelete();
             $table->unsignedTinyInteger('group');
             $table->json('placements');
-            $table->char('pattern', 25);
+            $table->string('pattern', 64);
             $table->unsignedTinyInteger('score');
             $table->timestamps();
 

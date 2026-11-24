@@ -3,8 +3,7 @@
  * A correct image plays its melody note; a wrong one plays a sour, detuned note.
  */
 export const MELODY = [
-    62, 66, 69, 74, 73, 71, 69, 66, 67, 71, 74, 71, 69, 66, 64, 66, 67, 69, 71,
-    73, 74, 73, 71, 69, 74,
+    62, 66, 69, 74, 73, 71, 69, 66, 67, 71, 74, 71, 69, 66, 73, 74,
 ];
 
 const CHORDS = [

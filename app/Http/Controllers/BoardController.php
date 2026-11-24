@@ -35,6 +35,7 @@ class BoardController extends Controller
             'result' => $arrangement === null ? null : [
                 ...$arrangement->only('id', 'placements', 'pattern', 'score'),
                 'mistakes' => $board->mistakes($arrangement->placements),
+                'solution' => $board->solution($arrangement->placements),
             ],
         ]);
     }

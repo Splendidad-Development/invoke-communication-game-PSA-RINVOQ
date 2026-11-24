@@ -68,8 +68,8 @@ it('saves the challenge answer and opens the board', function () {
 
     $this->get(route('board.show', $answer))
         ->assertInertia(fn (Assert $page) => $page->component('game/Board')
-            ->has('slotIds', 25)
-            ->has('images', 25)
+            ->has('slotIds', 16)
+            ->has('images', 16)
             ->where('result', null));
 });
 
@@ -89,25 +89,26 @@ it('saves the arrangement with the order of images and the server-side score', f
     $answer = Answer::factory()->create(['group' => 3]);
     playAs($answer->player);
     $placements = ArrangementFactory::perfectPlacements();
-    [$placements['unmet-0'], $placements['teae-0']] = [$placements['teae-0'], $placements['unmet-0']];
+    [$placements['unmet-0'], $placements['safety-0']] = [$placements['safety-0'], $placements['unmet-0']];
 
     $response = $this->post(route('arrangements.store', $answer), ['placements' => $placements]);
 
     $arrangement = Arrangement::query()->sole();
     $response->assertRedirect(route('arrangements.show', $arrangement));
     expect($arrangement->placements)->toBe($placements)
-        ->and($arrangement->score)->toBe(23)
-        ->and($arrangement->pattern)->toBe('0'.str_repeat('1', 23).'0')
+        ->and($arrangement->score)->toBe(14)
+        ->and($arrangement->pattern)->toBe('0'.str_repeat('1', 14).'0')
         ->and($arrangement->group)->toBe(3)
         ->and($arrangement->player_id)->toBe($answer->player_id);
 
     $this->get(route('arrangements.show', $arrangement))
         ->assertInertia(fn (Assert $page) => $page->component('game/Board')
-            ->where('result.score', 23)
+            ->where('result.score', 14)
             ->where('result.mistakes', [
-                ['slotId' => 'unmet-0', 'imageId' => 25, 'placedIn' => 'Unmet need', 'belongsIn' => 'TEAEs of EMMs'],
-                ['slotId' => 'teae-0', 'imageId' => 1, 'placedIn' => 'TEAEs of EMMs', 'belongsIn' => 'Unmet need'],
-            ]));
+                ['slotId' => 'unmet-0', 'imageId' => 16, 'placedIn' => 'Unmet need', 'belongsIn' => 'Integrated safety'],
+                ['slotId' => 'safety-0', 'imageId' => 1, 'placedIn' => 'Integrated safety', 'belongsIn' => 'Unmet need'],
+            ])
+            ->where('result.solution', ArrangementFactory::perfectPlacements()));
 });
 
 it('rejects a board with missing or repeated images', function (array $placements) {
@@ -118,7 +119,7 @@ it('rejects a board with missing or repeated images', function (array $placement
 
     expect(Arrangement::query()->count())->toBe(0);
 })->with([
-    'missing slot' => fn () => array_slice(ArrangementFactory::perfectPlacements(), 0, 24, true),
+    'missing slot' => fn () => array_slice(ArrangementFactory::perfectPlacements(), 0, 15, true),
     'repeated image' => fn () => array_replace(ArrangementFactory::perfectPlacements(), ['unmet-0' => 2]),
     'unknown image' => fn () => array_replace(ArrangementFactory::perfectPlacements(), ['unmet-0' => 99]),
 ]);
@@ -133,7 +134,7 @@ it('does not let a player submit a board for someone else’s answer', function 
 it('loads the leaderboard best first only when asked for', function () {
     $answer = Answer::factory()->create();
     playAs($answer->player);
-    Arrangement::factory()->for($answer)->create(['player_id' => $answer->player_id, 'group' => $answer->group, 'score' => 5, 'pattern' => str_repeat('0', 25)]);
+    Arrangement::factory()->for($answer)->create(['player_id' => $answer->player_id, 'group' => $answer->group, 'score' => 5, 'pattern' => str_repeat('0', 16)]);
     Arrangement::factory()->perfect()->create();
 
     $this->get(route('game.groups'))
@@ -143,7 +144,7 @@ it('loads the leaderboard best first only when asked for', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->reloadOnly('leaderboard', fn (Assert $reload) => $reload
                 ->has('leaderboard', 2)
-                ->where('leaderboard.0.score', 25)
+                ->where('leaderboard.0.score', 16)
                 ->where('leaderboard.0.mine', false)
                 ->where('leaderboard.1.mine', true)));
 });

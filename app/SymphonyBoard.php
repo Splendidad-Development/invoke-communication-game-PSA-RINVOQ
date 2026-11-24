@@ -158,6 +158,35 @@ class SymphonyBoard
             ->all());
     }
 
+    /**
+     * The correct board for a scored arrangement, as slot id => image id in board order.
+     * Within a section the images can go in any order, so boxes the player got right keep their image
+     * and the section's remaining correct images fill its other boxes. Only sent with a submitted arrangement.
+     *
+     * @param  array<string, int>  $placements
+     * @return array<string, int>
+     */
+    public function solution(array $placements): array
+    {
+        $solution = [];
+
+        foreach ($this->slots()->groupBy(fn (string $sectionKey): string => $sectionKey, preserveKeys: true) as $sectionKey => $sectionSlots) {
+            $slotIds = $sectionSlots->keys()->all();
+            $kept = array_filter(
+                array_intersect_key($placements, array_flip($slotIds)),
+                fn (int $imageId, string $slotId): bool => $this->isCorrect($slotId, $imageId),
+                ARRAY_FILTER_USE_BOTH,
+            );
+            $remaining = array_values(array_diff($this->sections[$sectionKey]['answers'], $kept));
+
+            foreach ($slotIds as $slotId) {
+                $solution[$slotId] = $kept[$slotId] ?? array_shift($remaining);
+            }
+        }
+
+        return array_merge(array_fill_keys($this->slotIds(), null), $solution);
+    }
+
     private function sectionTitleFor(?int $imageId): ?string
     {
         foreach ($this->sections as $section) {

@@ -36,10 +36,12 @@ class ArrangementFactory extends Factory
      */
     public function perfect(): static
     {
+        $placements = self::perfectPlacements();
+
         return $this->state(fn (): array => [
-            'placements' => self::perfectPlacements(),
-            'pattern' => str_repeat('1', 25),
-            'score' => 25,
+            'placements' => $placements,
+            'pattern' => str_repeat('1', count($placements)),
+            'score' => count($placements),
         ]);
     }
 

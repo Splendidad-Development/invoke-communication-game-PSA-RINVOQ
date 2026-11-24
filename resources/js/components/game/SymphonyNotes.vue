@@ -45,9 +45,15 @@ function barClass(index: number, isGood: boolean): string {
         aria-hidden="true"
         :class="
             size === 'large'
-                ? 'grid h-[86px] w-full max-w-[480px] grid-cols-[repeat(25,1fr)] items-end gap-1'
-                : 'grid h-6 grid-cols-[repeat(25,3px)] items-end gap-px sm:grid-cols-[repeat(25,4px)] sm:gap-0.5'
+                ? 'grid h-[86px] w-full max-w-[480px] items-end gap-1'
+                : 'grid h-6 items-end gap-px sm:gap-0.5'
         "
+        :style="{
+            gridTemplateColumns:
+                size === 'large'
+                    ? `repeat(${notes.length}, 1fr)`
+                    : `repeat(${notes.length}, 4px)`,
+        }"
     >
         <i
             v-for="(isGood, index) in notes"

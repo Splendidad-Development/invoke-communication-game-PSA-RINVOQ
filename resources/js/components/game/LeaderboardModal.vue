@@ -171,7 +171,9 @@ const isPlaying = (id: number): boolean =>
                             class="border-b border-white/6 px-2 py-2.5 font-display text-2xl leading-normal whitespace-nowrap text-gold"
                         >
                             {{ entry.score
-                            }}<small class="text-sm text-cream">/25</small>
+                            }}<small class="text-sm text-cream"
+                                >/{{ entry.pattern.length }}</small
+                            >
                         </td>
                         <td class="border-b border-white/6 px-2 py-2.5">
                             <SymphonyNotes

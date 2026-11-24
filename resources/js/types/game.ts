@@ -41,6 +41,8 @@ export type ArrangementResult = {
     score: number;
     /** The boxes the player got wrong, in board order. */
     mistakes: Mistake[];
+    /** The correct board: slot id => image id. */
+    solution: Record<string, number>;
 };
 
 export type Mistake = {

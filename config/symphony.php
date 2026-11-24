@@ -5,20 +5,21 @@
 | Communication Game – Symphony Board
 |--------------------------------------------------------------------------
 |
-| Content for the axSpA communication game. Each section is a labelled area
+| Content for the PsA (RINVOQ) communication game. Each section is a labelled area
 | on the board with a number of boxes ("slots") and the image numbers that
 | are correct for it. Images live in public/images/game/{number}.jpg.
+|
+| Source: "Content Communication game flow.pptx", PSA RINVOQ section (slides 29–44).
+| Image N is the image on slide 28 + N, and each section is the box title on those slides.
 |
 | The board's slot order (columns → rows → sections → slots) is also the
 | order in which the symphony is played back, one note per slot.
 |
 */
 
-$diseaseControlImages = [7, 8, 9, 10, 11, 12];
-
 return [
 
-    'image_count' => 25,
+    'image_count' => 16,
 
     'images_path' => '/images/game',
 
@@ -60,60 +61,57 @@ return [
 
     'sections' => [
         'unmet' => ['title' => 'Unmet need', 'tone' => 'unmet', 'slots' => 1, 'answers' => [1]],
-        'emms' => ['title' => 'EMMs in axSpA', 'tone' => 'add', 'slots' => 1, 'answers' => [4]],
-        'ibd' => ['title' => 'Screening for IBD in axSpA', 'tone' => 'add', 'slots' => 1, 'answers' => [3]],
-        'rtb' => ['title' => 'Reason to Believe', 'tone' => 'rtb', 'slots' => 1, 'answers' => [2]],
-        'ctrl' => ['title' => 'Control that’s fast and shown to last', 'tone' => 'ctrl', 'slots' => 2, 'answers' => [5, 6]],
-        'dc1' => ['title' => 'Disease control (RCT)', 'tone' => 'rct', 'slots' => 3, 'answers' => $diseaseControlImages],
-        'dc2' => ['title' => 'Disease control (RCT)', 'tone' => 'rct', 'slots' => 3, 'answers' => $diseaseControlImages],
-        'crohn' => ['title' => 'Crohn’s disease', 'tone' => 'rct', 'slots' => 1, 'answers' => [13]],
-        'uc' => ['title' => 'Ulcerative colitis', 'tone' => 'rct', 'slots' => 1, 'answers' => [14]],
-        'nma' => ['title' => 'NMA', 'tone' => 'add', 'slots' => 1, 'answers' => [15]],
-        'pain' => ['title' => 'Improvement in pain (RCT)', 'tone' => 'rct', 'slots' => 1, 'answers' => [16]],
-        'adelphi' => ['title' => 'RWE – Adelphi Switch', 'tone' => 'rwe', 'slots' => 1, 'answers' => [17]],
-        'upstand' => ['title' => 'RWE – UPSTAND', 'tone' => 'rwe', 'slots' => 1, 'answers' => [18]],
-        'inflam' => ['title' => 'Improvement in inflammation (RCT)', 'tone' => 'rct', 'slots' => 2, 'answers' => [19, 20]],
-        'func' => ['title' => 'Improvement in function (RCT)', 'tone' => 'rct', 'slots' => 2, 'answers' => [21, 22]],
-        'safety' => ['title' => 'Consistent safety profile', 'tone' => 'rct', 'slots' => 1, 'answers' => [23]],
-        'multi' => ['title' => 'Multiple indications', 'tone' => 'rct', 'slots' => 1, 'answers' => [24]],
-        'teae' => ['title' => 'TEAEs of EMMs', 'tone' => 'add', 'slots' => 1, 'answers' => [25]],
+        'rtb' => ['title' => 'Reason to Believe', 'tone' => 'rtb', 'slots' => 1, 'answers' => [3]],
+        'rtb_rapid' => ['title' => 'Reason to believe in Rapid efficacy across key PsA manifestations', 'tone' => 'rtb', 'slots' => 1, 'answers' => [4]],
+        'ctrl' => ['title' => 'Control that’s fast, shown to last', 'tone' => 'ctrl', 'slots' => 3, 'answers' => [2, 5, 7]],
+        'joint' => ['title' => 'Joint efficacy', 'tone' => 'rct', 'slots' => 1, 'answers' => [6]],
+        'mda' => ['title' => 'MDA response (RCT)', 'tone' => 'rct', 'slots' => 2, 'answers' => [8, 9]],
+        'joint_rct' => ['title' => 'Joint efficacy (RCT)', 'tone' => 'rct', 'slots' => 2, 'answers' => [10, 11]],
+        'skin' => ['title' => 'Skin clearance (RCT)', 'tone' => 'rct', 'slots' => 2, 'answers' => [12, 13]],
+        'mda_rwe' => ['title' => 'MDA (RWE)', 'tone' => 'rwe', 'slots' => 1, 'answers' => [14]],
+        'multi' => ['title' => 'Multiple indications', 'tone' => 'rct', 'slots' => 1, 'answers' => [15]],
+        'safety' => ['title' => 'Integrated safety', 'tone' => 'rct', 'slots' => 1, 'answers' => [16]],
     ],
 
+    /*
+    | The deck gives the boxes but not the column headings, so these headings
+    | (taken from the deck's box titles and the CLM navigation) need sign-off.
+    */
     'columns' => [
         [
             'key' => 'c1',
             'tone' => 'unmet',
             'title' => 'Unmet need',
-            'description' => 'axSpA is a multifaceted disease primarily characterised by chronic, inflammatory back pain, which may be accompanied by EMMs',
-            'rows' => [['unmet'], ['emms'], ['ibd']],
+            'description' => null,
+            'rows' => [['unmet']],
         ],
         [
             'key' => 'c2',
             'tone' => 'how',
             'title' => 'How RINVOQ works',
             'description' => null,
-            'rows' => [['rtb']],
+            'rows' => [['rtb'], ['rtb_rapid']],
         ],
         [
             'key' => 'c3',
             'tone' => 'simpl',
-            'title' => 'SIMPL3',
-            'description' => '1. Rapid and durable disease control across the axSpA spectrum',
-            'rows' => [['ctrl'], ['dc1', 'dc2'], ['crohn', 'uc'], ['nma']],
+            'title' => 'Control that’s fast, shown to last',
+            'description' => null,
+            'rows' => [['ctrl'], ['joint']],
         ],
         [
             'key' => 'c4',
             'tone' => 'simpl',
-            'title' => 'SIMPL3',
-            'description' => '2. Durable improvement in pain, inflammation, and function',
-            'rows' => [['pain'], ['adelphi', 'upstand'], ['inflam', 'func']],
+            'title' => 'PsA manifestations',
+            'description' => null,
+            'rows' => [['mda', 'joint_rct'], ['skin', 'mda_rwe']],
         ],
         [
             'key' => 'c5',
             'tone' => 'simpl',
-            'title' => 'SIMPL3',
-            'description' => '3. Proven efficacy across multiple indications with a consistent and long-term safety profile',
-            'rows' => [['safety'], ['multi'], ['teae']],
+            'title' => 'Safety data & experience',
+            'description' => null,
+            'rows' => [['multi'], ['safety']],
         ],
     ],
 

@@ -20,7 +20,7 @@ import { store } from '@/routes/players';
             <p
                 class="m-0 text-[clamp(1rem,1.6vw,1.375rem)] font-semibold [text-shadow:0_2px_12px_rgb(0_0_0/.6)]"
             >
-                Build the axSpA brand story, then hear how it sounds.
+                Build the PsA brand story, then hear how it sounds.
             </p>
 
             <Form
