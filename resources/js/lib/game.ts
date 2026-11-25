@@ -23,6 +23,8 @@ export const dragOptions = {
     group: 'symphony',
     animation: 150,
     draggable: '.tile',
+    // The whole tile; touch tablets swap in the grip (dragHandleOptions). Set explicitly so switching back restores it.
+    handle: '.tile',
     filter: '.zoom-button, .remove-button',
     preventOnFilter: false,
     forceFallback: true,
@@ -37,6 +39,16 @@ export const dragOptions = {
     // Vertical page scrolling while dragging is handled by useStickyEdgeScroll (the header is sticky).
     scroll: false,
     emptyInsertThreshold: 12,
+} as const;
+
+/**
+ * Touch tablets: only the grip on a tile starts a drag, and straight away (no press delay), so touching
+ * the image itself always scrolls the tray or the page.
+ */
+export const dragHandleOptions = {
+    ...dragOptions,
+    handle: '.drag-handle',
+    delay: 0,
 } as const;
 
 export const sectionToneClasses: Record<string, string> = {

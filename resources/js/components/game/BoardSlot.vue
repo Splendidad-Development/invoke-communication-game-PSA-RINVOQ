@@ -2,8 +2,8 @@
 import { VueDraggable } from 'vue-draggable-plus';
 import type { DraggableEvent } from 'vue-draggable-plus';
 import ImageTile from '@/components/game/ImageTile.vue';
-import { usePhoneLayout } from '@/composables/usePhoneLayout';
-import { dragOptions } from '@/lib/game';
+import { useDeviceLayout } from '@/composables/useDeviceLayout';
+import { dragHandleOptions, dragOptions } from '@/lib/game';
 import type { GameImage } from '@/types';
 
 const props = defineProps<{
@@ -20,8 +20,8 @@ const props = defineProps<{
 
 const list = defineModel<number[]>({ required: true });
 
-/** No drag and drop on phones: a box is filled by tapping it and picking an image. */
-const isPhone = usePhoneLayout();
+/** No drag and drop on phones (tap the box and pick an image); touch tablets drag by the grip. */
+const { isPhone, usesDragHandle } = useDeviceLayout();
 
 const emit = defineEmits<{
     dropped: [slotId: string, imageId: number, fromList: string];
@@ -61,7 +61,7 @@ function ariaLabel(): string {
 <template>
     <VueDraggable
         v-model="list"
-        v-bind="dragOptions"
+        v-bind="usesDragHandle ? dragHandleOptions : dragOptions"
         :sort="false"
         :disabled="locked || isPhone"
         :data-list="slotId"
@@ -91,6 +91,7 @@ function ariaLabel(): string {
             :image="images.get(imageId)!"
             fill
             :removable="!locked"
+            :handle="usesDragHandle && !locked"
             @zoom="emit('zoom', $event)"
             @remove="emit('remove', slotId)"
         />

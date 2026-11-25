@@ -12,10 +12,15 @@ import LeaderboardButton from '@/components/game/LeaderboardButton.vue';
 import MistakesModal from '@/components/game/MistakesModal.vue';
 import ResultModal from '@/components/game/ResultModal.vue';
 import { TRAY, useBoardArrangement } from '@/composables/useBoardArrangement';
-import { usePhoneLayout } from '@/composables/usePhoneLayout';
+import { useDeviceLayout } from '@/composables/useDeviceLayout';
 import { useStickyEdgeScroll } from '@/composables/useStickyEdgeScroll';
 import { useSymphonyPlayer } from '@/composables/useSymphonyPlayer';
-import { dragOptions, imageMap, RESULT_PLAYER_KEY } from '@/lib/game';
+import {
+    dragHandleOptions,
+    dragOptions,
+    imageMap,
+    RESULT_PLAYER_KEY,
+} from '@/lib/game';
 import GameLayout from '@/layouts/GameLayout.vue';
 import { store as storeArrangement } from '@/routes/arrangements';
 import type {
@@ -38,8 +43,8 @@ const props = defineProps<{
 
 const page = usePage();
 const symphony = useSymphonyPlayer();
-/** Phones place images by tapping a box; drag and drop stays on for desktop and tablets. */
-const isPhone = usePhoneLayout();
+/** Phones place images by tapping a box; touch tablets drag by the grip; desktop drags the whole image. */
+const { isPhone, usesDragHandle } = useDeviceLayout();
 const imagesById = computed(() => imageMap(props.images));
 const board = useBoardArrangement(
     props.slotIds,
@@ -280,6 +285,10 @@ onBeforeUnmount(() => symphony.stop());
                             Tap an image to see it large, then tap the box where
                             it belongs to place it.
                         </template>
+                        <template v-else-if="usesDragHandle">
+                            Tap an image to see it large, then drag it by its
+                            grip into the box where it belongs.
+                        </template>
                         <template v-else>
                             Hover or tap an image to see it large, then drag it
                             down into the box where it belongs.
@@ -287,7 +296,9 @@ onBeforeUnmount(() => symphony.stop());
                     </p>
                     <VueDraggable
                         v-model="board.lists[TRAY]"
-                        v-bind="dragOptions"
+                        v-bind="
+                            usesDragHandle ? dragHandleOptions : dragOptions
+                        "
                         :disabled="isPhone"
                         :data-list="TRAY"
                         class="flex min-h-[110px] [scrollbar-color:var(--color-gold)_transparent] gap-3 overflow-x-auto px-[clamp(.8rem,2vw,24px)] pt-1 pb-2.5"
@@ -300,6 +311,7 @@ onBeforeUnmount(() => symphony.stop());
                             v-for="imageId in board.lists[TRAY]"
                             :key="imageId"
                             :image="imagesById.get(imageId)!"
+                            :handle="usesDragHandle"
                             @zoom="lightboxImage = $event"
                         />
                         <p

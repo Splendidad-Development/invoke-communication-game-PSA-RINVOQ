@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import GripIcon from '@/components/game/GripIcon.vue';
 import ZoomIcon from '@/components/game/ZoomIcon.vue';
 import type { GameImage } from '@/types';
 
@@ -8,6 +9,8 @@ defineProps<{
     fill?: boolean;
     /** Show a button that takes the image off the board and back to the tray. */
     removable?: boolean;
+    /** Show the grip that drags the image (touch tablets, where touching the image itself scrolls). */
+    handle?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -27,6 +30,15 @@ const emit = defineEmits<{
         :style="{ backgroundImage: `url(${image.url})` }"
         :data-image="image.id"
     >
+        <span
+            v-if="handle"
+            class="drag-handle"
+            aria-hidden="true"
+            title="Drag to a box"
+            @click.stop
+        >
+            <GripIcon class="size-[15px]" />
+        </span>
         <button
             type="button"
             class="zoom-button"
