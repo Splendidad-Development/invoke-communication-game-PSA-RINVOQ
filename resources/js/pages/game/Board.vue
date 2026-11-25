@@ -12,6 +12,7 @@ import LeaderboardButton from '@/components/game/LeaderboardButton.vue';
 import MistakesModal from '@/components/game/MistakesModal.vue';
 import ResultModal from '@/components/game/ResultModal.vue';
 import { TRAY, useBoardArrangement } from '@/composables/useBoardArrangement';
+import { usePhoneLayout } from '@/composables/usePhoneLayout';
 import { useStickyEdgeScroll } from '@/composables/useStickyEdgeScroll';
 import { useSymphonyPlayer } from '@/composables/useSymphonyPlayer';
 import { dragOptions, imageMap, RESULT_PLAYER_KEY } from '@/lib/game';
@@ -37,6 +38,8 @@ const props = defineProps<{
 
 const page = usePage();
 const symphony = useSymphonyPlayer();
+/** Phones place images by tapping a box; drag and drop stays on for desktop and tablets. */
+const isPhone = usePhoneLayout();
 const imagesById = computed(() => imageMap(props.images));
 const board = useBoardArrangement(
     props.slotIds,
@@ -273,12 +276,19 @@ onBeforeUnmount(() => symphony.stop());
                     <p
                         class="m-0 px-[clamp(.8rem,2vw,24px)] text-[13px] font-medium text-muted"
                     >
-                        Hover or tap an image to see it large, then drag it down
-                        into the box where it belongs.
+                        <template v-if="isPhone">
+                            Tap an image to see it large, then tap the box where
+                            it belongs to place it.
+                        </template>
+                        <template v-else>
+                            Hover or tap an image to see it large, then drag it
+                            down into the box where it belongs.
+                        </template>
                     </p>
                     <VueDraggable
                         v-model="board.lists[TRAY]"
                         v-bind="dragOptions"
+                        :disabled="isPhone"
                         :data-list="TRAY"
                         class="flex min-h-[110px] [scrollbar-color:var(--color-gold)_transparent] gap-3 overflow-x-auto px-[clamp(.8rem,2vw,24px)] pt-1 pb-2.5"
                         aria-label="Images to place"
@@ -296,8 +306,15 @@ onBeforeUnmount(() => symphony.stop());
                             v-if="!board.lists[TRAY].length"
                             class="pointer-events-none self-center text-sm text-muted"
                         >
-                            All images are on the board. Drag between boxes to
-                            swap, click a box to change its image, or submit.
+                            <template v-if="isPhone">
+                                All images are on the board. Tap a box to change
+                                its image, or submit.
+                            </template>
+                            <template v-else>
+                                All images are on the board. Drag between boxes
+                                to swap, click a box to change its image, or
+                                submit.
+                            </template>
                         </p>
                     </VueDraggable>
                 </div>

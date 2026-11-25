@@ -47,5 +47,7 @@
   "45": "lib/game.ts",
   "46": "LeaderboardButton.vue",
   "47": "GameModal.vue",
-  "48": "MistakesModal.vue"
+  "48": "vue",
+  "49": "useStickyEdgeScroll",
+  "50": "useSymphonyPlayer"
 }

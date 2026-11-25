@@ -2,6 +2,7 @@
 import { VueDraggable } from 'vue-draggable-plus';
 import type { DraggableEvent } from 'vue-draggable-plus';
 import ImageTile from '@/components/game/ImageTile.vue';
+import { usePhoneLayout } from '@/composables/usePhoneLayout';
 import { dragOptions } from '@/lib/game';
 import type { GameImage } from '@/types';
 
@@ -18,6 +19,9 @@ const props = defineProps<{
 }>();
 
 const list = defineModel<number[]>({ required: true });
+
+/** No drag and drop on phones: a box is filled by tapping it and picking an image. */
+const isPhone = usePhoneLayout();
 
 const emit = defineEmits<{
     dropped: [slotId: string, imageId: number, fromList: string];
@@ -59,7 +63,7 @@ function ariaLabel(): string {
         v-model="list"
         v-bind="dragOptions"
         :sort="false"
-        :disabled="locked"
+        :disabled="locked || isPhone"
         :data-list="slotId"
         role="button"
         tabindex="0"
