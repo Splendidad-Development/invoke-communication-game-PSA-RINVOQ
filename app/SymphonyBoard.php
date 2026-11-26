@@ -15,7 +15,7 @@ class SymphonyBoard
     /**
      * @param  array<string, Section>  $sections
      * @param  list<Column>  $columns
-     * @param  array<int, array{persona: string, caption: list<array{text: string, bold?: bool}>, question: string}>  $groups
+     * @param  array<int, array{persona: string, caption: list<array{text: string, bold?: bool}>, question: string, example: string}>  $groups
      */
     public function __construct(
         private array $sections,
@@ -23,6 +23,7 @@ class SymphonyBoard
         private array $groups,
         private int $imageCount,
         private string $imagesPath,
+        private string $footnote,
     ) {}
 
     public static function fromConfig(): self
@@ -33,6 +34,7 @@ class SymphonyBoard
             groups: config('symphony.groups'),
             imageCount: config('symphony.image_count'),
             imagesPath: config('symphony.images_path'),
+            footnote: config('symphony.footnote'),
         );
     }
 
@@ -83,14 +85,23 @@ class SymphonyBoard
     }
 
     /**
-     * @return array{persona: string, question: string}
+     * @return array{persona: string, question: string, example: string}
      */
     public function group(int $group): array
     {
         return [
             'persona' => $this->groups[$group]['persona'],
             'question' => $this->groups[$group]['question'],
+            'example' => $this->groups[$group]['example'],
         ];
+    }
+
+    /**
+     * The abbreviations used in the group personas.
+     */
+    public function footnote(): string
+    {
+        return $this->footnote;
     }
 
     /**

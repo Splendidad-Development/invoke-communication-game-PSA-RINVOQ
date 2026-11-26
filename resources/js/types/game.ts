@@ -7,6 +7,8 @@ export type Group = {
     number: number;
     persona: string;
     question: string;
+    /** A sample answer shown under the question. */
+    example: string;
 };
 
 export type SectionTone = 'unmet' | 'rtb' | 'ctrl' | 'rct' | 'rwe' | 'add';

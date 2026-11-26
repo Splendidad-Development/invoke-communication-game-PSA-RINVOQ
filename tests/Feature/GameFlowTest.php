@@ -43,12 +43,15 @@ it('shows the group picker and the group question', function () {
             ->where('player.name', $player->name)
             ->has('groups', 3)
             ->where('groups.1.number', 2)
+            ->where('footnote', config('symphony.footnote'))
             ->where('groups.1.caption.1', ['text' => 'Bimzelx driven by strong perception of IL-17is', 'bold' => true]));
 
     $this->get(route('answers.create', 2))
         ->assertInertia(fn (Assert $page) => $page->component('game/Question')
             ->where('group.number', 2)
-            ->where('group.persona', config('symphony.groups.2.persona')));
+            ->where('group.persona', config('symphony.groups.2.persona'))
+            ->where('group.question', config('symphony.groups.2.question'))
+            ->where('group.example', config('symphony.groups.2.example')));
 });
 
 it('returns not found for a group that does not exist', function () {

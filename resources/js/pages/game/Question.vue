@@ -42,12 +42,19 @@ const answer = ref('');
                 >
                     {{ group.question }}
                 </label>
+                <p
+                    id="answer-example"
+                    class="-mt-2 text-[15px] font-medium text-muted italic"
+                >
+                    {{ group.example }}
+                </p>
                 <div>
                     <textarea
                         id="answer"
                         v-model="answer"
                         v-focus
                         name="body"
+                        aria-describedby="answer-example"
                         placeholder="Type your answer here"
                         class="block h-[170px] w-full resize-y rounded-[14px] border-2 border-gold bg-black/28 px-[18px] py-4 text-base font-medium text-cream placeholder:text-muted focus:outline-none"
                     />

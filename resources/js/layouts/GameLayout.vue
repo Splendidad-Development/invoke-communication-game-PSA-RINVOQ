@@ -17,7 +17,7 @@ withDefaults(
     >
         <div class="fixed inset-0 -z-0 overflow-hidden" aria-hidden="true">
             <div
-                class="absolute inset-0 bg-cover bg-right"
+                class="absolute inset-0 bg-cover bg-right-top"
                 style="background-image: url('/images/game/background.jpg')"
                 :class="focused && 'scale-105 blur-[5px]'"
             />

@@ -27,6 +27,7 @@ return [
     /*
     | persona: shown on the question card and the board.
     | caption: shown under the group's card on the group picker; bold parts are highlighted.
+    | question: the challenge the group answers; example: a sample answer shown under it.
     */
     'groups' => [
         1 => [
@@ -36,7 +37,8 @@ return [
                 ['text' => 'Prefers TNFis and IL-17is', 'bold' => true],
                 ['text' => ' as 1L and reserves JAKis for 3L+ AT (2nd+ call)'],
             ],
-            'question' => 'How would you address this HCP’s challenge in your call? Describe your approach.',
+            'question' => 'Discuss and define your call objective considering the type of interaction, the HCP profile, and their belief on RINVOQ for PsA. The call objective should include which key HCP beliefs you must challenge and which elements of the Brand Narrative you may need to use.',
+            'example' => 'For example: Explore why they believe in TNFi cycling vs JAKi; cover RINVOQ safety data',
         ],
         2 => [
             'persona' => 'Customizer: Influenced by rapid uptake of Bimzelx driven by strong perception of IL-17is (1st call)',
@@ -45,7 +47,8 @@ return [
                 ['text' => 'Bimzelx driven by strong perception of IL-17is', 'bold' => true],
                 ['text' => ' (1st call)'],
             ],
-            'question' => 'Which evidence would you lead with for this HCP, and why?',
+            'question' => 'Discuss and define your call objective considering the type of interaction, the HCP profile, and their belief on RINVOQ for PsA. The call objective should include which key HCP beliefs you must challenge and which elements of the Brand Narrative you may need to use.',
+            'example' => 'For example: Explore why they believe in TNFi cycling vs JAKi; cover RINVOQ safety data',
         ],
         3 => [
             'persona' => 'Customizer: Prefers Tremfya (guselkumab IL-23i) and relegates JAKi usage to 4L therapy in PsA (2nd+ call)',
@@ -54,9 +57,13 @@ return [
                 ['text' => 'Prefers Tremfya (guselkumab IL-23i) and relegates JAKi usage', 'bold' => true],
                 ['text' => ' to 4L therapy in PsA (2nd+ call)'],
             ],
-            'question' => 'How would you open a short call with this HCP? Write your key message.',
+            'question' => 'Discuss and define your call objective considering the type of interaction, the HCP profile, and their belief on RINVOQ for PsA. The call objective should include which key HCP beliefs you must challenge and which elements of the Brand Narrative you may need to use.',
+            'example' => 'For example: Explore why they believe in TNFi cycling vs JAKi; cover RINVOQ safety data',
         ],
     ],
+
+    // Abbreviations used in the group personas, shown in the bottom-left corner of the group picker.
+    'footnote' => '1L, first-line; IL, interleukin; i, inhibitor; TNF, tumor necrosis factor.',
 
     /*
     | Boxes, titles and answers follow the RINVOQ PsA answer board in
