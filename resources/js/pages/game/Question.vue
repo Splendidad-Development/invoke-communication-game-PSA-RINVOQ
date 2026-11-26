@@ -9,6 +9,8 @@ import type { Group, Player } from '@/types';
 defineProps<{
     player: Player;
     group: Group;
+    /** Abbreviations used in the personas, shown in the bottom-left corner. */
+    footnote: string;
 }>();
 
 const answer = ref('');
@@ -18,7 +20,7 @@ const answer = ref('');
     <Head :title="`Group ${group.number}`" />
     <GameLayout>
         <section
-            class="flex min-h-screen flex-col items-center justify-center px-4 py-8"
+            class="relative flex min-h-screen flex-col items-center justify-center px-4 pt-8 pb-8 sm:pb-16"
         >
             <Form
                 v-bind="store.form(group.number)"
@@ -74,6 +76,13 @@ const answer = ref('');
                     </button>
                 </div>
             </Form>
+
+            <!-- In the bottom-left corner from tablet up; on phones it follows the card. -->
+            <p
+                class="m-0 mt-6 max-w-[480px] self-start text-xs font-medium text-muted [text-shadow:0_1px_6px_rgb(0_0_0/.7)] sm:absolute sm:bottom-6 sm:left-6 sm:mt-0"
+            >
+                {{ footnote }}
+            </p>
         </section>
     </GameLayout>
 </template>

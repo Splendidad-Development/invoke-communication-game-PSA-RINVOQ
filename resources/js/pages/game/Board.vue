@@ -491,9 +491,6 @@ onBeforeUnmount(() => symphony.stop());
 
         <ImagePickerModal
             :slot-id="pickerSlotId"
-            :slot-title="
-                pickerSlotId ? (sectionTitles.get(pickerSlotId) ?? '') : ''
-            "
             :order="board.order.value"
             :images="imagesById"
             :current-image-id="

@@ -65,6 +65,12 @@ return [
     // Abbreviations used in the group personas, shown in the bottom-left corner of the group picker.
     'footnote' => '1L, first-line; IL, interleukin; i, inhibitor; TNF, tumor necrosis factor.',
 
+    // The /export page (every player with their answers, as PDF / Excel). Without EXPORT_PASSWORD it is turned off (404).
+    'export' => [
+        'title' => 'RINVOQ PsA Communication Game',
+        'password' => env('EXPORT_PASSWORD'),
+    ],
+
     /*
     | Boxes, titles and answers follow the RINVOQ PsA answer board in
     | "SpA Narrative Train the Trainer program – post-meeting asset – Communication Flow Game.pptx" (slides 29–31).

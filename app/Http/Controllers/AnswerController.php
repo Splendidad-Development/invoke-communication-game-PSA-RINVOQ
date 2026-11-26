@@ -16,6 +16,7 @@ class AnswerController extends Controller
         return Inertia::render('game/Question', [
             'player' => $this->currentPlayer($request)->only('id', 'name'),
             'group' => ['number' => $group, ...$board->group($group)],
+            'footnote' => $board->footnote(),
         ]);
     }
 

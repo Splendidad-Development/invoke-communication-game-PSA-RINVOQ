@@ -6,7 +6,6 @@ import type { GameImage } from '@/types';
 const props = defineProps<{
     /** The slot being filled, or null when the picker is closed. */
     slotId: string | null;
-    slotTitle: string;
     order: number[];
     images: Map<number, GameImage>;
     currentImageId: number | null;
@@ -87,7 +86,7 @@ function onKeydown(event: KeyboardEvent): void {
                     id="picker-title"
                     class="m-0 text-[clamp(1.15rem,2vw,22px)] font-bold text-cream"
                 >
-                    Choose an image for “{{ slotTitle }}”
+                    Choose an image
                 </h2>
                 <p class="m-0 text-[15px] font-medium text-muted">
                     Scroll left or right, pick the image that fits this box,
