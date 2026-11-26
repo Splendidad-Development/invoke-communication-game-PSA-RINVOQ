@@ -52,7 +52,7 @@ it('shows the group picker and the group question', function () {
             ->where('group.persona', config('symphony.groups.2.persona'))
             ->where('group.question', config('symphony.groups.2.question'))
             ->where('group.example', config('symphony.groups.2.example'))
-            ->where('footnote', config('symphony.footnote')));
+            ->where('group.footnote', config('symphony.groups.2.footnote')));
 });
 
 it('returns not found for a group that does not exist', function () {

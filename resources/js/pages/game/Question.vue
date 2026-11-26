@@ -9,8 +9,6 @@ import type { Group, Player } from '@/types';
 defineProps<{
     player: Player;
     group: Group;
-    /** Abbreviations used in the personas, shown in the bottom-left corner. */
-    footnote: string;
 }>();
 
 const answer = ref('');
@@ -81,7 +79,7 @@ const answer = ref('');
             <p
                 class="m-0 mt-6 max-w-[480px] self-start text-xs font-medium text-muted [text-shadow:0_1px_6px_rgb(0_0_0/.7)] sm:absolute sm:bottom-6 sm:left-6 sm:mt-0"
             >
-                {{ footnote }}
+                {{ group.footnote }}
             </p>
         </section>
     </GameLayout>

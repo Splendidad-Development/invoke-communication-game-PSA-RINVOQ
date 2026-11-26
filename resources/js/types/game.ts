@@ -9,6 +9,8 @@ export type Group = {
     question: string;
     /** A sample answer shown under the question. */
     example: string;
+    /** Abbreviations, shown in the bottom-left corner of the question page. */
+    footnote: string;
 };
 
 export type SectionTone = 'unmet' | 'rtb' | 'ctrl' | 'rct' | 'rwe' | 'add';

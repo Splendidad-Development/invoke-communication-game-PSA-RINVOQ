@@ -41,15 +41,9 @@
   "39": "services.php",
   "40": "symphony.php",
   "41": "app.blade.php",
-  "42": "Illuminate\\Http\\Request",
   "43": "bootstrap/app.php",
   "44": "BoardSlot.vue",
   "45": "lib/game.ts",
-  "46": "Inertia\\Response",
   "47": "GameModal.vue",
-  "48": "App\\Http\\Controllers\\ArrangementController",
-  "49": "useStickyEdgeScroll",
-  "50": "StoreArrangementRequest.php",
-  "51": "App\\Http\\Controllers\\PlayerController",
-  "52": ".create"
+  "49": "useStickyEdgeScroll"
 }

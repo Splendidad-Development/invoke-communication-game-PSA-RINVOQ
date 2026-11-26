@@ -1,17 +1,17 @@
 # Graph Report - invoke-communication-game-PSA-RINVOQ  (2026-11-26)
 
 ## Corpus Check
-- 104 files · ~24,939 words
+- 104 files · ~25,024 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 22 file(s) not represented in the graph (top: (none) 17, .example 1, .neon 1)
 
 ## Summary
-- 712 nodes · 1129 edges · 53 communities (27 shown, 26 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 46 edges (avg confidence: 0.85)
+- 712 nodes · 1128 edges · 47 communities (27 shown, 20 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 45 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `eebbdcf0`
+- Built from commit: `e9e77e38`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -43,20 +43,14 @@
 - psr-4
 - extra
 - pnpm-workspace.yaml
-- Illuminate\Http\Request
 - bootstrap/app.php
 - BoardSlot.vue
 - lib/game.ts
-- Inertia\Response
 - GameModal.vue
-- App\Http\Controllers\ArrangementController
 - useStickyEdgeScroll
-- StoreArrangementRequest.php
-- App\Http\Controllers\PlayerController
-- .create
 
 ## God Nodes (most connected - your core abstractions)
-1. `SymphonyBoard` - 32 edges
+1. `SymphonyBoard` - 34 edges
 2. `compilerOptions` - 19 edges
 3. `vue` - 17 edges
 4. `PlayerExport` - 14 edges
@@ -70,19 +64,23 @@
 ## Surprising Connections (you probably didn't know these)
 - `{closure#2}()` --references--> `Arrangement`  [EXTRACTED]
   app/Http/Middleware/HandleInertiaRequests.php → app/Models/Arrangement.php
-- `AnswerController` --inherits--> `Controller`  [EXTRACTED]
-  app/Http/Controllers/AnswerController.php → app/Http/Controllers/Controller.php
-- `ArrangementController` --inherits--> `Controller`  [EXTRACTED]
-  app/Http/Controllers/ArrangementController.php → app/Http/Controllers/Controller.php
-- `BoardController` --inherits--> `Controller`  [EXTRACTED]
-  app/Http/Controllers/BoardController.php → app/Http/Controllers/Controller.php
+- `PlayerExport` --references--> `SymphonyBoard`  [EXTRACTED]
+  app/PlayerExport.php → app/SymphonyBoard.php
 - `ExportController` --inherits--> `Controller`  [EXTRACTED]
   app/Http/Controllers/ExportController.php → app/Http/Controllers/Controller.php
+- `barClass()` --calls--> `cn()`  [EXTRACTED]
+  resources/js/components/game/SymphonyNotes.vue → resources/js/lib/utils.ts
+- `AnswerController` --inherits--> `Controller`  [EXTRACTED]
+  app/Http/Controllers/AnswerController.php → app/Http/Controllers/Controller.php
 
 ## Import Cycles
 - None detected.
 
-## Communities (53 total, 26 thin omitted)
+## Communities (47 total, 20 thin omitted)
+
+### Community 0 - "SymphonyBoard"
+Cohesion: 0.05
+Nodes (15): AnswerController, ArrangementController, BoardController, Controller, GameController, PlayerController, EnsurePlayerSession, {closure#1}() (+7 more)
 
 ### Community 1 - "useDeviceLayout.ts"
 Cohesion: 0.40
@@ -133,7 +131,7 @@ Cohesion: 0.15
 Nodes (13): scripts, ci:check, dev, lint, lint:check, post-autoload-dump, post-create-project-cmd, post-root-package-install (+5 more)
 
 ### Community 15 - "SymphonyBoard.php"
-Cohesion: 0.15
+Cohesion: 0.14
 Nodes (4): {closure#3}(), {closure#4}(), {closure#5}(), {closure#7}()
 
 ### Community 16 - "require-dev"
@@ -168,13 +166,9 @@ Nodes (5): autoload, psr-4, App\\, Database\\Factories\\, Database\\Seeders\\
 Cohesion: 0.67
 Nodes (3): extra, laravel, dont-discover
 
-### Community 42 - "Illuminate\Http\Request"
-Cohesion: 0.32
-Nodes (3): Controller, EnsurePlayerSession, RequireExportPassword
-
 ### Community 43 - "bootstrap/app.php"
-Cohesion: 0.15
-Nodes (6): {closure#1}(), {closure#2}(), HandleInertiaRequests, {closure#1}(), {closure#2}(), {closure#3}()
+Cohesion: 0.28
+Nodes (3): {closure#1}(), {closure#2}(), {closure#3}()
 
 ### Community 44 - "BoardSlot.vue"
 Cohesion: 0.15
@@ -193,22 +187,22 @@ Cohesion: 0.52
 Nodes (6): useStickyEdgeScroll(), onPointerMove(), scrollDirection(), start(), stop(), tick()
 
 ## Knowledge Gaps
-- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **20 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `SymphonyBoard` connect `SymphonyBoard` to `Answer`, `GameFlowTest.php`, `AppServiceProvider.php`, `PlayerExport`, `SymphonyBoard.php`?**
+  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+- **Should `SymphonyBoard` be split into smaller, more focused modules?**
+  _Cohesion score 0.054527750730282376 - nodes in this community are weakly interconnected._
 - **Why does `vue` connect `vue` to `useDeviceLayout.ts`, `package.json`, `Board.vue`, `types/game.ts`, `ResultModal.vue`, `GameModal.vue`, `useStickyEdgeScroll`, `useBoardArrangement`?**
   _High betweenness centrality (0.050) - this node is a cross-community bridge._
 - **Should `package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.052525252525252523 - nodes in this community are weakly interconnected._
-- **Why does `SymphonyBoard` connect `SymphonyBoard` to `Answer`, `GameFlowTest.php`, `AppServiceProvider.php`, `Inertia\Response`, `PlayerExport`, `App\Http\Controllers\ArrangementController`, `SymphonyBoard.php`, `StoreArrangementRequest.php`?**
-  _High betweenness centrality (0.046) - this node is a cross-community bridge._
-- **Should `Answer` be split into smaller, more focused modules?**
-  _Cohesion score 0.050921861281826165 - nodes in this community are weakly interconnected._
 - **Why does `@inertiajs/vue3` connect `types/game.ts` to `package.json`, `ResultModal.vue`, `Board.vue`?**
   _High betweenness centrality (0.017) - this node is a cross-community bridge._
+- **Should `Answer` be split into smaller, more focused modules?**
+  _Cohesion score 0.050921861281826165 - nodes in this community are weakly interconnected._
 - **Should `GameFlowTest.php` be split into smaller, more focused modules?**
   _Cohesion score 0.08013937282229965 - nodes in this community are weakly interconnected._
-- **Should `Illuminate\Database\Schema\Blueprint` be split into smaller, more focused modules?**
-  _Cohesion score 0.10483870967741936 - nodes in this community are weakly interconnected._

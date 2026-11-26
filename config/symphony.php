@@ -28,6 +28,7 @@ return [
     | persona: shown on the question card and the board.
     | caption: shown under the group's card on the group picker; bold parts are highlighted.
     | question: the challenge the group answers; example: a sample answer shown under it.
+    | footnote: abbreviations, shown in the bottom-left corner of the group's question page.
     */
     'groups' => [
         1 => [
@@ -39,6 +40,7 @@ return [
             ],
             'question' => 'Discuss and define your call objective considering the type of interaction, the HCP profile, and their belief on RINVOQ for PsA. The call objective should include which key HCP beliefs you must challenge and which elements of the Brand Narrative you may need to use.',
             'example' => 'For example: Explore why they believe in TNFi cycling vs JAKi; cover RINVOQ safety data',
+            'footnote' => '1L, first-line; AT, advanced therapy; HCP, healthcare professional; IL, interleukin; JAKi, Janus kinase inhibitor; PsA, psoriatic arthritis; TNFi, tumor necrosis factor inhibitor.',
         ],
         2 => [
             'persona' => 'Customizer: Influenced by rapid uptake of Bimzelx driven by strong perception of IL-17is (1st call)',
@@ -49,6 +51,7 @@ return [
             ],
             'question' => 'Discuss and define your call objective considering the type of interaction, the HCP profile, and their belief on RINVOQ for PsA. The call objective should include which key HCP beliefs you must challenge and which elements of the Brand Narrative you may need to use.',
             'example' => 'For example: Explore why they believe in TNFi cycling vs JAKi; cover RINVOQ safety data',
+            'footnote' => 'axSpA, axial spondyloarthritis; HCP, healthcare professional; JAKi, Janus kinase inhibitor; TNFi, tumor necrosis factor inhibitor.',
         ],
         3 => [
             'persona' => 'Customizer: Prefers Tremfya (guselkumab IL-23i) and relegates JAKi usage to 4L therapy in PsA (2nd+ call)',
@@ -59,10 +62,11 @@ return [
             ],
             'question' => 'Discuss and define your call objective considering the type of interaction, the HCP profile, and their belief on RINVOQ for PsA. The call objective should include which key HCP beliefs you must challenge and which elements of the Brand Narrative you may need to use.',
             'example' => 'For example: Explore why they believe in TNFi cycling vs JAKi; cover RINVOQ safety data',
+            'footnote' => 'axSpA, axial spondyloarthritis; HCP, healthcare professional; IL, interleukin; IL-23i, interleukin-23 inhibitor; JAKi, Janus kinase inhibitor; PsA, psoriatic arthritis; TNFi, tumor necrosis factor inhibitor.',
         ],
     ],
 
-    // Abbreviations used in the group personas, shown in the bottom-left corner of the group picker.
+    // Abbreviations shown in the bottom-left corner of the group picker (each question page has its own, above).
     'footnote' => '1L, first-line; IL, interleukin; i, inhibitor; TNF, tumor necrosis factor.',
 
     // The /export page (every player with their answers, as PDF / Excel). Without EXPORT_PASSWORD it is turned off (404).

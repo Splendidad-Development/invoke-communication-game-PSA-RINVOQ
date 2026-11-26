@@ -15,7 +15,7 @@ class SymphonyBoard
     /**
      * @param  array<string, Section>  $sections
      * @param  list<Column>  $columns
-     * @param  array<int, array{persona: string, caption: list<array{text: string, bold?: bool}>, question: string, example: string}>  $groups
+     * @param  array<int, array{persona: string, caption: list<array{text: string, bold?: bool}>, question: string, example: string, footnote: string}>  $groups
      */
     public function __construct(
         private array $sections,
@@ -85,7 +85,7 @@ class SymphonyBoard
     }
 
     /**
-     * @return array{persona: string, question: string, example: string}
+     * @return array{persona: string, question: string, example: string, footnote: string}
      */
     public function group(int $group): array
     {
@@ -93,11 +93,12 @@ class SymphonyBoard
             'persona' => $this->groups[$group]['persona'],
             'question' => $this->groups[$group]['question'],
             'example' => $this->groups[$group]['example'],
+            'footnote' => $this->groups[$group]['footnote'],
         ];
     }
 
     /**
-     * The abbreviations used in the group personas.
+     * The abbreviations shown on the group picker.
      */
     public function footnote(): string
     {
