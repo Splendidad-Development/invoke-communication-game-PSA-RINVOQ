@@ -24,6 +24,10 @@ return [
 
     'images_path' => '/images/game',
 
+    // Images 7 and 11 were the same slide, so 7 was removed and image 11 is placed twice: tile 7 is a second
+    // copy of 11 (it shows 11's picture and scores as 11), so each copy can go in one of image 11's boxes.
+    'image_copies' => [7 => 11],
+
     /*
     | persona: shown on the question card and the board.
     | caption: shown under the group's card on the group picker; bold parts are highlighted.
@@ -51,7 +55,7 @@ return [
             ],
             'question' => 'Discuss and define your call objective considering the type of interaction, the HCP profile, and their belief on RINVOQ for PsA. The call objective should include which key HCP beliefs you must challenge and which elements of the Brand Narrative you may need to use.',
             'example' => 'For example: Explore why they believe in TNFi cycling vs JAKi; cover RINVOQ safety data',
-            'footnote' => 'axSpA, axial spondyloarthritis; HCP, healthcare professional; JAKi, Janus kinase inhibitor; TNFi, tumor necrosis factor inhibitor.',
+            'footnote' => 'IL, interleukin; PsA, psoriatic arthritis; axial spondyloarthritis; HCP, healthcare professional; JAKi, Janus kinase inhibitor; TNFi, tumor necrosis factor inhibitor.',
         ],
         3 => [
             'persona' => 'Customizer: Prefers Tremfya (guselkumab IL-23i) and relegates JAKi usage to 4L therapy in PsA (2nd+ call)',
@@ -62,7 +66,7 @@ return [
             ],
             'question' => 'Discuss and define your call objective considering the type of interaction, the HCP profile, and their belief on RINVOQ for PsA. The call objective should include which key HCP beliefs you must challenge and which elements of the Brand Narrative you may need to use.',
             'example' => 'For example: Explore why they believe in TNFi cycling vs JAKi; cover RINVOQ safety data',
-            'footnote' => 'axSpA, axial spondyloarthritis; HCP, healthcare professional; IL, interleukin; IL-23i, interleukin-23 inhibitor; JAKi, Janus kinase inhibitor; PsA, psoriatic arthritis; TNFi, tumor necrosis factor inhibitor.',
+            'footnote' => 'axial spondyloarthritis; HCP, healthcare professional; IL, interleukin; IL-23i, interleukin-23 inhibitor; JAKi, Janus kinase inhibitor; PsA, psoriatic arthritis; TNFi, tumor necrosis factor inhibitor.',
         ],
     ],
 
@@ -84,7 +88,7 @@ return [
         'rtb' => ['title' => 'Reason to Believe', 'tone' => 'rtb', 'slots' => 1, 'answers' => [3]],
         'ctrl' => ['title' => 'Control that’s fast, shown to last', 'tone' => 'ctrl', 'slots' => 2, 'answers' => [2, 5]],
         // Left: SELECT-PsA 1 (non-biologic DMARD-IR). Right: SELECT-PsA 2 (bDMARD-IR).
-        'joint' => ['title' => 'Joint efficacy', 'tone' => 'rct', 'slots' => 2, 'answers' => [6, 7]],
+        'joint' => ['title' => 'Joint efficacy', 'tone' => 'rct', 'slots' => 2, 'answers' => [6, 11]],
         'rtb_rapid' => ['title' => 'Reason to believe', 'tone' => 'rtb', 'slots' => 1, 'answers' => [4]],
         'mda' => ['title' => 'MDA response (RCT)', 'tone' => 'rct', 'slots' => 2, 'answers' => [8, 9]],
         'joint_rct' => ['title' => 'Joint efficacy (RCT)', 'tone' => 'rct', 'slots' => 2, 'answers' => [10, 11]],

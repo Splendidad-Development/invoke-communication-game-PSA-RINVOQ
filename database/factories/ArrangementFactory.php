@@ -52,16 +52,7 @@ class ArrangementFactory extends Factory
      */
     public static function perfectPlacements(): array
     {
-        $usedImages = [];
-        $placements = [];
-
-        foreach (app(SymphonyBoard::class)->slots() as $slotId => $sectionKey) {
-            $imageId = collect(config("symphony.sections.{$sectionKey}.answers"))
-                ->first(fn (int $candidate): bool => ! in_array($candidate, $usedImages, true));
-            $usedImages[] = $imageId;
-            $placements[$slotId] = $imageId;
-        }
-
-        return $placements;
+        // The correct board for an empty arrangement: every box filled, image copies included.
+        return array_map(intval(...), app(SymphonyBoard::class)->solution([]));
     }
 }

@@ -24,6 +24,8 @@ class SymphonyBoard
         private int $imageCount,
         private string $imagesPath,
         private string $footnote,
+        /** @var array<int, int> Tile number => the image it is a second copy of (see config symphony.image_copies). */
+        private array $imageCopies = [],
     ) {}
 
     public static function fromConfig(): self
@@ -35,6 +37,7 @@ class SymphonyBoard
             imageCount: config('symphony.image_count'),
             imagesPath: config('symphony.images_path'),
             footnote: config('symphony.footnote'),
+            imageCopies: config('symphony.image_copies', []),
         );
     }
 
@@ -121,15 +124,48 @@ class SymphonyBoard
         ], $this->groupNumbers());
     }
 
-    public function isCorrect(string $slotId, ?int $imageId): bool
+    /**
+     * The image a tile shows and is scored as: a copy counts as its original.
+     */
+    public function imageOf(int $tileId): int
     {
-        $sectionKey = $this->slots()->get($slotId);
+        return $this->imageCopies[$tileId] ?? $tileId;
+    }
 
-        if ($sectionKey === null || $imageId === null) {
-            return false;
+    /**
+     * The tiles that show an image: the image's own tile, then its copies.
+     *
+     * @return list<int>
+     */
+    private function tilesOf(int $imageId): array
+    {
+        return [$imageId, ...array_keys(array_filter($this->imageCopies, fn (int $original): bool => $original === $imageId))];
+    }
+
+    /**
+     * Whether each slot holds a correct image, slot id => bool in board order. Within a section the images can go
+     * in any order, but each answer counts once: two copies of an image in a section that needs it once score one box.
+     *
+     * @param  array<string, int>  $placements
+     * @return array<string, bool>
+     */
+    public function correctSlots(array $placements): array
+    {
+        $unfilled = array_map(fn (array $section): array => $section['answers'], $this->sections);
+        $correct = [];
+
+        foreach ($this->slots() as $slotId => $sectionKey) {
+            $tileId = $placements[$slotId] ?? null;
+            $index = $tileId === null ? false : array_search($this->imageOf($tileId), $unfilled[$sectionKey], true);
+
+            if ($index !== false) {
+                unset($unfilled[$sectionKey][$index]);
+            }
+
+            $correct[$slotId] = $index !== false;
         }
 
-        return in_array($imageId, $this->sections[$sectionKey]['answers'], true);
+        return $correct;
     }
 
     /**
@@ -140,8 +176,8 @@ class SymphonyBoard
      */
     public function score(array $placements): array
     {
-        $pattern = collect($this->slotIds())
-            ->map(fn (string $slotId): string => $this->isCorrect($slotId, $placements[$slotId] ?? null) ? '1' : '0')
+        $pattern = collect($this->correctSlots($placements))
+            ->map(fn (bool $isCorrect): string => $isCorrect ? '1' : '0')
             ->implode('');
 
         return [
@@ -159,8 +195,10 @@ class SymphonyBoard
      */
     public function mistakes(array $placements): array
     {
+        $correct = $this->correctSlots($placements);
+
         return array_values($this->slots()
-            ->reject(fn (string $sectionKey, string $slotId): bool => $this->isCorrect($slotId, $placements[$slotId] ?? null))
+            ->reject(fn (string $sectionKey, string $slotId): bool => $correct[$slotId])
             ->map(fn (string $sectionKey, string $slotId): array => [
                 'slotId' => $slotId,
                 'imageId' => $placements[$slotId] ?? null,
@@ -180,34 +218,53 @@ class SymphonyBoard
      */
     public function solution(array $placements): array
     {
+        $correct = $this->correctSlots($placements);
+        $kept = array_filter($placements, fn (string $slotId): bool => $correct[$slotId] ?? false, ARRAY_FILTER_USE_KEY);
+        $usedTiles = array_values($kept);
         $solution = [];
 
         foreach ($this->slots()->groupBy(fn (string $sectionKey): string => $sectionKey, preserveKeys: true) as $sectionKey => $sectionSlots) {
-            $slotIds = $sectionSlots->keys()->all();
-            $kept = array_filter(
-                array_intersect_key($placements, array_flip($slotIds)),
-                fn (int $imageId, string $slotId): bool => $this->isCorrect($slotId, $imageId),
-                ARRAY_FILTER_USE_BOTH,
-            );
-            $remaining = array_values(array_diff($this->sections[$sectionKey]['answers'], $kept));
+            $remaining = $this->sections[$sectionKey]['answers'];
 
-            foreach ($slotIds as $slotId) {
-                $solution[$slotId] = $kept[$slotId] ?? array_shift($remaining);
+            foreach ($sectionSlots->keys() as $slotId) {
+                if (isset($kept[$slotId])) {
+                    unset($remaining[array_search($this->imageOf($kept[$slotId]), $remaining, true)]);
+                }
+            }
+
+            foreach ($sectionSlots->keys() as $slotId) {
+                if (isset($kept[$slotId])) {
+                    $solution[$slotId] = $kept[$slotId];
+
+                    continue;
+                }
+
+                // A tile not used elsewhere: an image wanted in two places gets its copy in the second one.
+                $imageId = array_shift($remaining);
+                $tileId = collect($this->tilesOf($imageId))->first(fn (int $tile): bool => ! in_array($tile, $usedTiles, true)) ?? $imageId;
+                $usedTiles[] = $tileId;
+                $solution[$slotId] = $tileId;
             }
         }
 
         return array_merge(array_fill_keys($this->slotIds(), null), $solution);
     }
 
-    private function sectionTitleFor(?int $imageId): ?string
+    /**
+     * Where a tile belongs; an image wanted in more than one section lists them all ("A or B").
+     */
+    private function sectionTitleFor(?int $tileId): ?string
     {
-        foreach ($this->sections as $section) {
-            if (in_array($imageId, $section['answers'], true)) {
-                return $section['title'];
-            }
+        if ($tileId === null) {
+            return null;
         }
 
-        return null;
+        $titles = collect($this->sections)
+            ->filter(fn (array $section): bool => in_array($this->imageOf($tileId), $section['answers'], true))
+            ->pluck('title')
+            ->unique();
+
+        return $titles->isEmpty() ? null : $titles->implode(' or ');
     }
 
     /**
@@ -246,10 +303,11 @@ class SymphonyBoard
     }
 
     /**
-     * An image is {number}.png when that file exists in public/, otherwise {number}.jpg.
+     * An image is {number}.png when that file exists in public/, otherwise {number}.jpg. A copy uses its original's file.
      */
-    private function imageFile(int $imageId): string
+    private function imageFile(int $tileId): string
     {
+        $imageId = $this->imageOf($tileId);
         $png = "{$this->imagesPath}/{$imageId}.png";
 
         return is_file(public_path($png)) ? $png : "{$this->imagesPath}/{$imageId}.jpg";

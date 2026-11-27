@@ -1,8 +1,8 @@
 {
   "0": "SymphonyBoard",
-  "1": "useDeviceLayout.ts",
+  "1": "static",
   "2": "package.json",
-  "3": "PlayerExport.php",
+  "3": "App\\Models\\Answer",
   "4": "GameFlowTest.php",
   "5": "Illuminate\\Database\\Schema\\Blueprint",
   "6": "Board.vue",
@@ -20,7 +20,6 @@
   "18": "composer.json",
   "19": "DatabaseSeeder.php",
   "20": "useBoardArrangement",
-  "21": "UserFactory.php",
   "22": "config",
   "23": "Pest.php",
   "24": "require",
@@ -44,12 +43,8 @@
   "42": "global.d.ts",
   "43": "bootstrap/app.php",
   "44": "BoardSlot.vue",
-  "45": "ResultModal.vue",
-  "46": "Arrangement",
-  "47": "ImagePickerModal.vue",
-  "48": "ExportTest.php",
+  "45": "lib/game.ts",
+  "47": "GameModal.vue",
   "49": "useStickyEdgeScroll",
-  "50": "User.php",
-  "51": "Illuminate\\Database\\Eloquent\\Factories\\Factory",
   "52": "ImageTile.vue"
 }
