@@ -36,7 +36,7 @@ withDefaults(
 
         <LeaderboardButton
             v-if="!focused"
-            class="fixed top-[calc(env(safe-area-inset-top,0px)+24px)] right-6 z-40 bg-night/80 backdrop-blur-md"
+            class="fixed top-[calc(env(safe-area-inset-top,0px)+24px)] left-6 z-40 bg-night/80 backdrop-blur-md"
         />
 
         <div class="relative">

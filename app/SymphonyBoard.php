@@ -241,8 +241,18 @@ class SymphonyBoard
     {
         return array_map(fn (int $imageId): array => [
             'id' => $imageId,
-            'url' => asset("{$this->imagesPath}/{$imageId}.jpg"),
+            'url' => asset($this->imageFile($imageId)),
         ], $this->imageIds());
+    }
+
+    /**
+     * An image is {number}.png when that file exists in public/, otherwise {number}.jpg.
+     */
+    private function imageFile(int $imageId): string
+    {
+        $png = "{$this->imagesPath}/{$imageId}.png";
+
+        return is_file(public_path($png)) ? $png : "{$this->imagesPath}/{$imageId}.jpg";
     }
 
     public function backgroundUrl(): string

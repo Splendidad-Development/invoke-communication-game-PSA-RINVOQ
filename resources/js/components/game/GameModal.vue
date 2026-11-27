@@ -19,7 +19,10 @@ const props = withDefaults(
         labelledby?: string;
         panelClass?: string;
         showClose?: boolean;
-        /** "prominent" makes the close button a solid, labelled pill (used on image previews). */
+        /**
+         * "prominent" makes the close button a solid, labelled pill that sits above the panel's top-right corner,
+         * outside it, so it never covers the content (used on image previews).
+         */
         closeVariant?: 'default' | 'prominent';
     }>(),
     {
@@ -118,6 +121,9 @@ onBeforeUnmount(() => {
                 :class="
                     cn(
                         'relative max-h-[94vh] w-full max-w-[1100px] overflow-auto rounded-[20px] bg-panel-solid p-6 text-cream shadow-[0_30px_90px_rgb(0_0_0/.6)]',
+                        // Room above the panel for the close button; panel and button together stay within 94vh.
+                        closeVariant === 'prominent' &&
+                            'mt-16 max-h-[calc(94vh-4rem)] overflow-visible',
                         panelClass,
                     )
                 "
@@ -125,7 +131,7 @@ onBeforeUnmount(() => {
                 <button
                     v-if="showClose && closeVariant === 'prominent'"
                     type="button"
-                    class="absolute top-3 right-3 z-10 inline-flex cursor-pointer items-center gap-2 rounded-full bg-gold py-2.5 pr-5 pl-4 text-base font-extrabold text-ink shadow-[0_0_0_3px_var(--color-night),0_8px_24px_rgb(0_0_0/.45)] transition hover:bg-gold-light focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-[.97]"
+                    class="absolute right-0 bottom-full z-10 mb-3 inline-flex cursor-pointer items-center gap-2 rounded-full bg-gold py-2.5 pr-5 pl-4 text-base font-extrabold text-ink shadow-[0_0_0_3px_var(--color-night),0_8px_24px_rgb(0_0_0/.45)] transition hover:bg-gold-light focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-[.97]"
                     aria-label="Close preview"
                     @click="emit('close')"
                 >

@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "app/SymphonyBoard.php": {
-    "mtime": 1795708606.247555,
-    "seen": 1795708620.924717,
-    "ast_hash": "43a0c272653415103d988224c9708eeb",
+    "mtime": 1795777628.0974438,
+    "seen": 1795777637.4277198,
+    "ast_hash": "69a87919b48444d55bd9e854274a08ae",
     "semantic_hash": ""
   },
   "artisan": {
@@ -330,15 +330,15 @@
     "semantic_hash": ""
   },
   "resources/js/components/game/GameModal.vue": {
-    "mtime": 1795606337.987269,
-    "seen": 1795606830.876414,
-    "ast_hash": "70c807bb3c94837796c8099d89b9f2a4",
+    "mtime": 1795777175.6513712,
+    "seen": 1795777181.001396,
+    "ast_hash": "ce5d8da797507189f51e3aaf1a807485",
     "semantic_hash": ""
   },
   "resources/js/components/game/ImageLightbox.vue": {
-    "mtime": 1795606337.9873571,
-    "seen": 1795606830.876414,
-    "ast_hash": "782b92ba5c234eac5707a45eeb65169f",
+    "mtime": 1795777175.6517565,
+    "seen": 1795777181.001398,
+    "ast_hash": "94d41f079135f7fd2e0b03f4405eb7b8",
     "semantic_hash": ""
   },
   "resources/js/components/game/ImagePickerModal.vue": {
